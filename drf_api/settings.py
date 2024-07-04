@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-lf++=i8lrosp2e1!pc)^d9o55xqo03$&91z=^*bxv-e3_a#el+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-meenarathi-drfapi-ukz8z73kkux.ws-eu114.gitpod.io']
+ALLOWED_HOSTS = ['8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
 
 
 # Application definition
@@ -65,6 +65,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'drf_api.urls'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net',
+]
+
 
 TEMPLATES = [
     {
