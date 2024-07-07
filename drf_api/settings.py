@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'comments',
     'likes',
-    'followers'
+    'followers',
+    'django-filters',
 ]
 
 MIDDLEWARE = [
