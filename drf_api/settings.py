@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 if os.path.exists('env.py'):
     import env
@@ -54,8 +55,15 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'drf_api.serializers.CurrentUserSerializer'
 }
 
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
+
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = 'django-insecure-lf++=i8lrosp2e1!pc)^d9o55xqo03$&91z=^*bxv-e3_a#el+'
+#SECRET_KEY = 'django-insecure-lf++=i8lrosp2e1!pc)^d9o55xqo03$&91z=^*bxv-e3_a#el+'
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 DEBUG = True
 ALLOWED_HOSTS = ['8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
 
@@ -83,6 +91,8 @@ INSTALLED_APPS = [
     'comments',
     'likes',
     'followers',
+    'dj_rest_auth.registration',
+    'corsheaders',
 ]
 
 SITE_ID = 1
@@ -94,6 +104,7 @@ AUTHENTICATION_BACKENDS = (
 
 # Middleware Configuration
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -103,7 +114,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
-
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+         os.environ.get('CLIENT_ORIGIN')
+     ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+         r"^https://.*\.gitpod\.io$",
+     ]
+    CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'drf_api.urls'
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net',
@@ -129,13 +148,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'drf_api.wsgi.application'
 
 # Database Configuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+if 'DEV' in os.environ:
+     DATABASES = {
+         'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': BASE_DIR / 'db.sqlite3',
+         }
+     }
+else:
+     DATABASES = {
+         'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+     }
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {
