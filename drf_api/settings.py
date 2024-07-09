@@ -65,7 +65,12 @@ JWT_AUTH_SAMESITE = 'None'
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
-ALLOWED_HOSTS = ['8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
+
+
+
+ALLOWED_HOSTS = ['drf-api-re-de7340a4e18c.herokuapp.com', '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
+
+
 
 # Application definition
 INSTALLED_APPS = [
