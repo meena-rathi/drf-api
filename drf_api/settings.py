@@ -69,9 +69,9 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['drf-api-re-de7340a4e18c.herokuapp.com', '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
+#ALLOWED_HOSTS = ['drf-api-re-de7340a4e18c.herokuapp.com', '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
 
-
+ALLOWED_HOSTS = ['8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net', os.environ.get('ALLOWED_HOST')]
 
 # Application definition
 INSTALLED_APPS = [
