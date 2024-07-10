@@ -69,7 +69,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOST'), '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
+ALLOWED_HOSTS = ['drf-api-re.herokuapp.com', '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
 
 
 
