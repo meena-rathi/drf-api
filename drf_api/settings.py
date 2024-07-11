@@ -140,11 +140,8 @@ MIDDLEWARE = [
 #         rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
 #     ]
 if 'CLIENT_ORIGIN_DEV' in os.environ:
-    extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
-    ]
-    CORS_ALLOW_CREDENTIALS = True
+ CORS_ALLOWED_ORIGINS = [os.environ.get('CLIENT_ORIGIN_DEV')]
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'drf_api.urls'
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net',
