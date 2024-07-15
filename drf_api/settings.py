@@ -29,14 +29,23 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Django REST Framework Settings
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [(
+#         'rest_framework.authentication.SessionAuthentication'
+#         if 'DEV' in os.environ
+#         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+#     )],
+#     'DEFAULT_PAGINATION_CLASS':
+#         'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10,
+#     'DATETIME_FORMAT': '%d %b %Y',
+# }
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
-        if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # Use SessionAuthentication for development
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',  # Use JWTCookieAuthentication in production
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%d %b %Y',
 }
@@ -66,6 +75,8 @@ JWT_AUTH_SAMESITE = 'None'
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
+
+
 
 
 
@@ -140,7 +151,7 @@ if 'CLIENT_ORIGIN' in os.environ:
 #         rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
 #     ]
 if 'CLIENT_ORIGIN_DEV' in os.environ:
- CORS_ALLOWED_ORIGINS = [os.environ.get('CLIENT_ORIGIN_DEV')]
+    CORS_ALLOWED_ORIGINS = [os.environ.get('CLIENT_ORIGIN_DEV')]
 CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'drf_api.urls'
 CSRF_TRUSTED_ORIGINS = [
