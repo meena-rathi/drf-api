@@ -29,23 +29,14 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Django REST Framework Settings
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [(
-#         'rest_framework.authentication.SessionAuthentication'
-#         if 'DEV' in os.environ
-#         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-#     )],
-#     'DEFAULT_PAGINATION_CLASS':
-#         'rest_framework.pagination.PageNumberPagination',
-#     'PAGE_SIZE': 10,
-#     'DATETIME_FORMAT': '%d %b %Y',
-# }
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # Use SessionAuthentication for development
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',  # Use JWTCookieAuthentication in production
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    )],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%d %b %Y',
 }
@@ -54,11 +45,11 @@ if 'DEV' not in os.environ:
         'rest_framework.renderers.JSONRenderer',
     ]
 
-# JWT Settings
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
 
 # REST Auth Serializers
 REST_AUTH_SERIALIZERS = {
@@ -70,19 +61,9 @@ JWT_AUTH_REFRESH_COOKE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
 # Quick-start development settings - unsuitable for production
-#SECRET_KEY = 'django-insecure-lf++=i8lrosp2e1!pc)^d9o55xqo03$&91z=^*bxv-e3_a#el+'
-
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
-
-
-
-
-
-# ALLOWED_HOSTS = ['drf-api-re-de7340a4e18c.herokuapp.com', '8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net']
-
-# ALLOWED_HOSTS = ['8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net',  os.environ.get('ALLOWED_HOST', ''), 
 
 print(f"ALLOWED_HOST from env: {os.environ.get('ALLOWED_HOST', '')}")
 
@@ -104,8 +85,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
-    'dj_rest_auth',
     'django.contrib.sites',
+    'dj_rest_auth',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -135,28 +116,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
          os.environ.get('CLIENT_ORIGIN')
      ]
-# else:
-#     CORS_ALLOWED_ORIGIN_REGEXES = [
-#          r"^https://.*\.gitpod\.io$",
-#      ]
-# if 'CLIENT_ORIGIN_DEV' in os.environ:
-#     extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
-#     CORS_ALLOWED_ORIGIN_REGEXES = [
-#         rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
-#     ]
+
 if 'CLIENT_ORIGIN_DEV' in os.environ:
     CORS_ALLOWED_ORIGINS = [os.environ.get('CLIENT_ORIGIN_DEV')]
+
 CORS_ALLOW_CREDENTIALS = True
-ROOT_URLCONF = 'drf_api.urls'
+
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-meenarathi-drfapi-u9akd1xzt9h.ws.codeinstitute-ide.net',
 ]
+
+ROOT_URLCONF = 'drf_api.urls'
 
 # Templates Configuration
 TEMPLATES = [
@@ -178,12 +153,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'drf_api.wsgi.application'
 
 # Database Configuration
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 if 'DEV' in os.environ:
      DATABASES = {
          'default': {
@@ -195,6 +164,7 @@ else:
      DATABASES = {
          'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
      }
+     
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {
